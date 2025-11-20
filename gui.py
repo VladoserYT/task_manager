@@ -11,11 +11,9 @@ class TaskManagerApp:
         self.setup_ui()
 
     def setup_ui(self):
-        # Используем Frame для лучшей организации виджетов
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Поля ввода
         ttk.Label(main_frame, text="Название:").grid(row=0, column=0, sticky=tk.W, pady=5)
         self.title_entry = ttk.Entry(main_frame, width=40)
         self.title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=5)
@@ -28,14 +26,12 @@ class TaskManagerApp:
         self.date_entry = ttk.Entry(main_frame, width=40)
         self.date_entry.grid(row=2, column=1, sticky=(tk.W, tk.E), pady=5)
 
-        # Кнопки
         button_frame = ttk.Frame(main_frame)
         button_frame.grid(row=3, column=0, columnspan=2, pady=10)
         
         ttk.Button(button_frame, text="Добавить задачу", command=self.add_task).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_frame, text="Удалить выбранную", command=self.delete_task).pack(side=tk.LEFT, padx=5)
 
-        # Список задач
         ttk.Label(main_frame, text="Список задач:").grid(row=4, column=0, sticky=tk.W, pady=5)
         
         list_frame = ttk.Frame(main_frame)
@@ -50,7 +46,6 @@ class TaskManagerApp:
         
         self.update_listbox()
         
-        # Настройка растягивания
         main_frame.columnconfigure(1, weight=1)
         list_frame.columnconfigure(0, weight=1)
         list_frame.rowconfigure(0, weight=1)
@@ -67,7 +62,6 @@ class TaskManagerApp:
             messagebox.showwarning("Ошибка ввода", "Пожалуйста, заполните все поля: Название, Описание и Срок выполнения.")
             return
 
-        # Простая проверка формата даты (ГГГГ-ММ-ДД)
         try:
             datetime.strptime(due_date, "%Y-%m-%d")
         except ValueError:
@@ -83,7 +77,6 @@ class TaskManagerApp:
     def delete_task(self):
         selected = self.tasks_listbox.curselection()
         if selected:
-            # curselection() возвращает кортеж индексов, берем первый элемент
             index_to_delete = selected[0]
             self.manager.delete_task(index_to_delete)
             self.update_listbox()
@@ -94,12 +87,9 @@ class TaskManagerApp:
     def update_listbox(self):
         self.tasks_listbox.delete(0, tk.END)
         for i, task in enumerate(self.manager.tasks):
-            # Добавляем номер задачи для удобства
             display_text = f"{i+1}. {task.title} (до {task.due_date})"
             self.tasks_listbox.insert(tk.END, display_text)
             
-            # Дополнительно: можно добавить всплывающую подсказку с описанием
-            # (Для этого потребуется дополнительная библиотека, но для простоты оставим как есть)
 
     def clear_inputs(self):
         self.title_entry.delete(0, tk.END)
@@ -107,7 +97,6 @@ class TaskManagerApp:
         self.date_entry.delete(0, tk.END)
 
 if __name__ == "__main__":
-    # Для корректной работы с датой в TaskManagerApp
     from datetime import datetime 
     
     root = tk.Tk()
