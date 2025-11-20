@@ -31,13 +31,11 @@ class TaskManager:
             }
             for task in self.tasks
         ]
-        # Используем ensure_ascii=False для корректного сохранения кириллицы
         with open(self.filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
 
     def load_from_file(self):
         try:
-            # Указываем кодировку utf-8 для чтения файла
             with open(self.filename, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self.tasks = [
@@ -47,5 +45,4 @@ class TaskManager:
         except FileNotFoundError:
             self.tasks = []
         except json.JSONDecodeError:
-            # Обработка случая, когда файл пуст или содержит некорректный JSON
             self.tasks = []
